@@ -1,37 +1,29 @@
-class Subject {
-    constructor() {
-        this.observers = {};
+"use strict"
+
+class User {
+    constructor(name) {
+        this.name = name;
     }
 
-    on(event, fn) {
-        if (!this.observers[event]) {
-            this.observers[event] = [];
-        }else
-        this.observers[event].push(fn);
-    }
-
-    emit(event, message) {
-        if (this.observers[event]) {
-            this.observers[event].forEach(fn => fn(message));
-        }
+    logger() {
+        console.log("user:" + this.name)
     }
 }
 
-const subject = new Subject();
-subject.on('eat', console.log); // register an observer
-subject.on('study', console.log); // register an observer
+class DecoratedUser {
+    constructor(user, street, state) {
+        this.user = user;
+        this.name = user.name;
+        this.street = street;
+        this.state = state;
+    }
 
-function foo(msg) {
-    console.log('foo: ' + msg);
+    logger() {
+        console.log("decorated user: " + this.name + ", " + this.street + ", " + this.state)
+    }
 }
-subject.on('eat', foo);
-subject.on('study', foo);
 
-subject.emit('eat', 'Corn');
-//output for Line above: subject.emit('eat', 'Corn');
-// Corn
-// foo: Corn
-subject.emit('study', 'cs445');
-//output for Line above: subject.emit('study', 'cs445');
-// cs445
-// foo: cs445
+const user = new User("Kelly");
+
+const decorated = new DecoratedUser(user, "Broadway", "New York");
+decorated.logger();

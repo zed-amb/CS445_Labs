@@ -1,43 +1,39 @@
+"use strict"
 
-const shoppingCart = (() => {
-    let basket = [];
-  
-    return {
-      upsertItem(item) {
-        const index = basket.findIndex(basketItem => basketItem.id === item.id);
-        if (index > -1) {
-          basket[index] = item;
-        } else {
-          basket.push(item);
+class RegularBulb {
+    constructor() {
+        this.lumen = [50, 100]
+        this.last = 1
+    }
+}
+
+class EnergySaverBulb {
+    constructor(color) {
+        this.lumen = [5, 40]
+        this.last = 10
+        this.color = color
+    }
+}
+//creating Factory method
+class Factory {
+    createBulb(type, color) {
+        // let lightBulb;
+        if (type === "regularBulb") {
+            return new RegularBulb()
+        } else if (type === "energySaverBulb") {
+            return new EnergySaverBulb(color)
         }
-      },
-      getItemsCount() {
-        return basket.length;
-      },
-      getTotalPrice() {
-        return basket.reduce((total, item) => total + item.product.price * item.count, 0);
-      },
-      removeItemById(id) {
-        basket = basket.filter(item => item.id !== id);
-      }
-    };
-  })();
-  
 
-const item1 = { id: 0, product: { id: 1, name: 'Coffee', description: 'Coffee Grounds from Ethiopia', price: 9 }, count: 1 }
-const item2 = { id: 1, product: { id: 2, name: 'Tea', description: 'Oonlong Tea from China', price: 10 }, count: 5 }
-const item3 = { id: 2, product: { id: 3, name: 'Bottled Water', description: 'Bottled Water from US', price: 2 }, count: 30 }
+        return null
+    }
+}
+const factory = new Factory();
+const bulbs = [];
 
-shoppingCart.upsertItem(item1);
-shoppingCart.upsertItem(item2);
-shoppingCart.upsertItem(item3);
-console.log(shoppingCart.getTotalPrice()); //Expected Result: 119
-item3.product.name = 'Himilayan Water';
-item3.product.price = 10;
-shoppingCart.upsertItem(item3);
+bulbs.push(factory.createBulb("regularBulb"));
+bulbs.push(factory.createBulb("energySaverBulb", "red"));
 
-console.log(shoppingCart.getItemsCount()); //Expected Result: 3
-console.log(shoppingCart.getTotalPrice()); //Expected Result: 359
-shoppingCart.removeItemById(1);
-console.log(shoppingCart.getItemsCount()); //Expected Result: 2
-console.log(shoppingCart.getTotalPrice()); //Expected Result: 309
+
+for (let i = 0, len = bulbs.length; i < len; i++) {
+    console.log(bulbs[i]);
+}
